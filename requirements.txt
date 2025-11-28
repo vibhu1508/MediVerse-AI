@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+python-dotenv
+google-generativeai
+Pillow
+pytest
+httpx
+pytest-mock
