@@ -3,3 +3,7 @@ uvicorn
 requests
 pydantic
 textwrap
+streamlit
+pandas
+numpy
+pydeck
