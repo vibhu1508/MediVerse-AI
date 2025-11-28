@@ -1,4 +1,5 @@
 __pycache__
+.gitignore
 unet_final
 unet.zip
 wf.png
