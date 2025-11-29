@@ -1,27 +1,19 @@
-// src/app/api/analysis/start/route.ts
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
-// ✅ Force Node.js runtime → ensures console.log prints in terminal
 export const runtime = "nodejs"
 
-/**
- * Analysis route: accepts image_url, forwards to U-Net backend
- * Falls back to mock response if backend unavailable.
- */
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
 
-    // ✅ Print payload cleanly like your onboarding route does
     console.log("📨 Incoming /analysis/start Payload:\n" + JSON.stringify(body, null, 2))
 
     const imageUrl = body?.image_url ?? ""
     const gender = body?.gender ?? "men"
 
-    // Try forwarding to a local U-Net backend if available. Configure via
-    // env var ANALYSIS_BACKEND_URL or default to localhost:8050
-    const backendUrl = process.env.ANALYSIS_BACKEND_URL ?? "http://localhost:8050/api/uploadfile"
+    // Try forwarding to a local U-Net backend if available
+    const backendUrl = "http://localhost:8050/api/uploadfile"
     try {
       // Convert image URL to file for backend
       // For now, send as JSON; backend will adapt
