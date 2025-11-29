@@ -6,8 +6,8 @@ import type { NextRequest } from "next/server"
 export const runtime = "nodejs"
 
 /**
- * Mock analysis route.
- * In production you will forward payload to backend ML server and return its response.
+ * Analysis route: accepts image_url, forwards to U-Net backend
+ * Falls back to mock response if backend unavailable.
  */
 export async function POST(req: NextRequest) {
   try {
@@ -17,15 +17,18 @@ export async function POST(req: NextRequest) {
     console.log("📨 Incoming /analysis/start Payload:\n" + JSON.stringify(body, null, 2))
 
     const imageUrl = body?.image_url ?? ""
+    const gender = body?.gender ?? "men"
 
     // Try forwarding to a local U-Net backend if available. Configure via
     // env var ANALYSIS_BACKEND_URL or default to localhost:8050
     const backendUrl = process.env.ANALYSIS_BACKEND_URL ?? "http://localhost:8050/api/uploadfile"
     try {
+      // Convert image URL to file for backend
+      // For now, send as JSON; backend will adapt
       const res = await fetch(backendUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ image_url: imageUrl, gender }),
       })
 
       if (res.ok) {
